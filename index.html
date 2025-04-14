@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrtlChat</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://kit.fontawesome.com/2ff1179492.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="title-container">
+      <span style="font-size: 2em; margin-right: 10px;">🐢</span>
+      <div>
+        <h1 class="main-title">TrtlChat</h1>
+        <p class="subtitle">powered by teatree.chat</p>
+      </div>
+    </div>
+    <nav class="nav-buttons">
+      <button onclick="openAbout()">
+        <i class="fas fa-info-circle"></i> About
+      </button>
+      <button onclick="openSettings()">
+        <i class="fas fa-cog"></i> Settings
+      </button>
+    </nav>
+  </header>
+
+  <div class="main-container">
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <button class="toggle-btn" id="toggleBtn">
+        <i class="fas fa-chevron-left"></i> <!-- FontAwesome icon -->
+      </button>
+     <div class="text">
+      <h2>Your Chats</h2>
+      <ul id="chat-list">
+        <!-- Chat list dynamically rendered -->
+      </ul>
+      <button onclick="createNewChat()">+ New Chat</button>
+     </div>
+ </aside>
+
+    <div class="chat-area">
+      <div id="chat"></div>
+
+      <div id="input-area">
+        <input type="text" id="input" placeholder="Say something..." />
+        <button id="send"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleBtn');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      const icon = sidebar.classList.contains('collapsed') ? 'fa-chevron-right' : 'fa-chevron-left';
+      toggleBtn.innerHTML = `<i class="fas ${icon}"></i>`;
+    });
+  </script>
+  <script>
+    function openAbout() {
+      window.location.href = 'about.html';
+    }
+  </script>
+ <script src="main.js" defer></script>
+</body>
+</html>

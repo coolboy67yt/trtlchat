@@ -1,0 +1,4 @@
+# this is the flask app that I use to host trtlchat when i'm making it
+host-site.py
+
+__pycache__
