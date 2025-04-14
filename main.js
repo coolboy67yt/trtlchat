@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('input');
   const send = document.getElementById('send');
   const sidebar = document.getElementById('sidebar');
-  const API_URL = 'https://cors-anywhere.herokuapp.com/https://api.teatree.chat/v1/chat/completions';
+  const API_URL = '/api/proxy';
 
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : createNewChat(false);
