@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const API_URL = '/api/proxy';
   
     let chats = getChatsFromCookies();
-    let currentChatId = chats.length > 0 ? chats[0].id : null; // Set to null initially
+    let currentChatId = chats.length > 0 ? chats[0].id : null;
   
     if (currentChatId === null) {
       currentChatId = createNewChat(false); // Create new chat if no chats exist
     }
   
     renderSidebar();
-    loadChat(currentChatId); // Now it's safe to call this after ensuring currentChatId is set
+    loadChat(currentChatId);
   
     if (!chat || !input || !send || !sidebar) {
       console.error('Missing one or more critical elements.');
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function saveChatsToCookies() {
     const expDate = new Date();
-    expDate.setFullYear(expDate.getFullYear() + 20); // 🎉 Basically forever
+    expDate.setFullYear(expDate.getFullYear() + 20); // Sure, 20 years isn't exactly "forever", but let's be honest. Who TF will use this 20 years from now?
     document.cookie = `chats=${encodeURIComponent(JSON.stringify(chats))}; path=/; expires=${expDate.toUTCString()}`;
   }
 
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const currentChat = chats.find(chat => chat.id === currentChatId);
 
-    // Update chat name if it's the first message
+    // Update chat name if it's the first msg
     if (currentChat.messages.length === 0) {
       currentChat.name = userInput.length > 20 ? `${userInput.substring(0, 20)}...` : userInput;
       saveChatsToCookies();
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </li>
         `).join('')}
       </ul>
-      <button onclick="createNewChat(false)">+ New Chat</button>
+      <button class="newchat" onclick="createNewChat(false)">+ New Chat</button>
     `;
   }
 
@@ -181,8 +181,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'Enter') sendMessage();
   });
 
-  window.loadChat = loadChat; // Expose to global scope for sidebar links
-  window.deleteChat = deleteChat; // Expose to global scope for delete buttons
+  // do stuff
+  window.loadChat = loadChat;
+  window.deleteChat = deleteChat;
   window.createNewChat = createNewChat;
 
 });
+
+const sidebar = document.getElementById('sidebar');
+const toggleBtn = document.getElementById('toggleBtn');
+
+toggleBtn.addEventListener('click', () => {
+sidebar.classList.toggle('collapsed');
+const icon = sidebar.classList.contains('collapsed') ? 'fa-chevron-right' : 'fa-chevron-left';
+toggleBtn.innerHTML = `<i class="fas ${icon}"></i>`;
+});
+
+function openAbout() {
+  window.location.href = 'about.html';
+}
