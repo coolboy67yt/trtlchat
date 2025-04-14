@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const send = document.getElementById('send');
   const sidebar = document.getElementById('sidebar');
   const API_URL = '/api/proxy';
-
+  
+  let aiPrompt = "You are an AI chatbot hosted on TrtlChat. You can use all markdown features, such as images, text formatting, and more."
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
 
@@ -85,7 +86,7 @@ function saveChatsToCookies() {
 }
 
 function createNewChat(saveImmediately = true) {
-  const newChat = { id: Date.now(), name: `New Chat`, messages: [] };
+  const newChat = { id: Date.now(), name: `New Chat`, messages: [{role: 'system', content: aiPrompt}] };
   chats.push(newChat);
   if (saveImmediately) saveChatsToCookies();
   renderSidebar();
