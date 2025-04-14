@@ -1,41 +1,29 @@
 // api/proxy.js
 
-export default async function handler(event, context) {
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method Not Allowed' })
-    };
-  }
-
-  const apiKey = "a";
-
-  try {
+export default async function handler(req, res) {
+    // Only allow POST requests to this endpoint
+    if (req.method !== 'POST') {
+      return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+  
+    // Ensure you have set your API key in Vercel's environment variables
+    const apiKey = "ur-api-key";
+  
     const response = await fetch('https://api.teatree.chat/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: event.body, // Pass the body of the incoming request
+      body: JSON.stringify(req.body),
     });
-
+  
+    // If the response is not ok, return the error
     if (!response.ok) {
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: 'Failed to fetch data from Tea Tree API' })
-      };
+      return res.status(response.status).json({ error: 'Failed to fetch data from Tea Tree API' });
     }
-
+  
+    // Return the successful response from Tea Tree API
     const data = await response.json();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data)
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Internal Server Error', details: error.message })
-    };
+    return res.status(200).json(data);
   }
-}
