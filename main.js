@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'content';
-    if (sender === 'bot') {
+    if (sender === 'assistant') {
       contentDiv.innerHTML = marked.parse(content);
     } else {
       contentDiv.textContent = content;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentChat.messages.push({ role: 'user', content: userInput });
     input.value = '';
 
-    appendMessage('', 'bot', true);
+    appendMessage('', 'assistant', true);
 
     fetch(API_URL, {
       method: 'POST',
