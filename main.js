@@ -153,8 +153,9 @@ function sendMessage() {
     currentChat.messages.push({ role: 'bot', content: botReply });
     saveChatsToCookies();
   })
-  .catch(() => {
-    updateBotMessageTyped('[Error: failed to fetch]');
+  .catch((error) => {
+    console.error('Error details:', error); // Log error details for debugging
+    updateBotMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
   });
 }
 
