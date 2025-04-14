@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('input');
   const send = document.getElementById('send');
   const sidebar = document.getElementById('sidebar');
-  const API_URL = '/api/proxy';
+  const API_URL = '/.netlify/functions/proxy';
 
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
