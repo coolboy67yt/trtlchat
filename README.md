@@ -7,5 +7,5 @@ Try it out at [https://chat.turtldev.online](https://chat.turtldev.online)!
 &nbsp;
 
 
-### Made by turtledevv
+### Made with ❤ and 🐢 by turtledevv
 contact@turtldev.online
