@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const contentDiv = document.createElement('div');
     contentDiv.className = 'content';
-    if (sender === 'assistant') {
+    if (sender === 'bot') {
       contentDiv.innerHTML = marked.parse(content);
     } else {
       contentDiv.textContent = content;
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentChat.messages.push({ role: 'user', content: userInput });
     input.value = '';
 
-    appendMessage('', 'assistant', true);
+    appendMessage('', 'bot', true);
 
     fetch(API_URL, {
       method: 'POST',
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       const botReply = data.choices?.[0]?.message?.content || '[no response]';
       updateBotMessageTyped(botReply);
-      currentChat.messages.push({ role: 'assistant', content: botReply });
+      currentChat.messages.push({ role: 'bot', content: botReply });
       saveChatsToCookies();
     })
     .catch(() => {
