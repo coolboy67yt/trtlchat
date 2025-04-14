@@ -1,21 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const chat = document.getElementById('chat');
-  const input = document.getElementById('input');
-  const send = document.getElementById('send');
-  const sidebar = document.getElementById('sidebar');
-  const API_URL = '/api/proxy';
-
-  let chats = getChatsFromCookies();
-  let currentChatId = chats.length > 0 ? chats[0].id : createNewChat(false);
-
-  renderSidebar();
-  loadChat(currentChatId);
-
-  if (!chat || !input || !send || !sidebar) {
-    console.error('Missing one or more critical elements.');
-    return;
-  }
-
+    const chat = document.getElementById('chat');
+    const input = document.getElementById('input');
+    const send = document.getElementById('send');
+    const sidebar = document.getElementById('sidebar');
+    const API_URL = '/api/proxy';
+  
+    let chats = getChatsFromCookies();
+    let currentChatId = chats.length > 0 ? chats[0].id : null; // Set to null initially
+  
+    if (currentChatId === null) {
+      currentChatId = createNewChat(false); // Create new chat if no chats exist
+    }
+  
+    renderSidebar();
+    loadChat(currentChatId); // Now it's safe to call this after ensuring currentChatId is set
+  
+    if (!chat || !input || !send || !sidebar) {
+      console.error('Missing one or more critical elements.');
+      return;
+    }
   function appendMessage(content, sender, isLoading = false) {
     const div = document.createElement('div');
     div.classList.add('message', sender);
