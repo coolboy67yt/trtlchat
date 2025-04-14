@@ -169,16 +169,16 @@ body {
   align-self: flex-end;
 }
 
-.bot {
+.assistant {
   background: #2a2a3d;
   align-self: flex-start;
 }
 
-.bot .content {
+.assistant .content {
   animation: fadeIn 0.3s ease-in;
 }
 
-.bot .content p {
+.assistant .content p {
   margin: 0;
 }
 
