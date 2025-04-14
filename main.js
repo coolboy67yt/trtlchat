@@ -25,7 +25,7 @@ function appendMessage(content, sender, isLoading = false) {
 
   const contentDiv = document.createElement('div');
   contentDiv.className = 'content';
-  if (sender === 'bot') {
+  if (sender === 'assistant') {
     contentDiv.innerHTML = marked.parse(content);
   } else {
     contentDiv.textContent = content;
@@ -41,7 +41,7 @@ function appendMessage(content, sender, isLoading = false) {
   }
 }
 
-function updateBotMessageTyped(msg) {
+function updateassistantMessageTyped(msg) {
   const div = document.getElementById('loading-message');
   if (!div) return;
 
@@ -132,7 +132,7 @@ function sendMessage() {
   currentChat.messages.push({ role: 'user', content: userInput });
   input.value = '';
 
-  appendMessage('', 'bot', true);
+  appendMessage('', 'assistant', true);
 
   fetch(API_URL, {
     method: 'POST',
@@ -150,18 +150,18 @@ function sendMessage() {
   .then(data => {
     // Check if we received the expected data structure
     if (data.choices && data.choices.length > 0 && data.choices[0].message) {
-      const botReply = data.choices[0].message.content;
-      updateBotMessageTyped(botReply);
-      currentChat.messages.push({ role: 'bot', content: botReply });
+      const assistantReply = data.choices[0].message.content;
+      updateassistantMessageTyped(assistantReply);
+      currentChat.messages.push({ role: 'assistant', content: assistantReply });
       saveChatsToCookies();
     } else {
-      updateBotMessageTyped('⚠ Something went wrong. Please try again later.');
+      updateassistantMessageTyped('⚠ Something went wrong. Please try again later.');
     }
   })
   .catch((error) => {
     // Log and show error message if fetch fails
     console.error('Error details:', error); // Log error details for debugging
-    updateBotMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
+    updateassistantMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
   });
 }
 
