@@ -148,12 +148,18 @@ function sendMessage() {
   })
   .then(res => res.json())
   .then(data => {
-    const botReply = data.choices?.[0]?.message?.content || '[no response]';
-    updateBotMessageTyped(botReply);
-    currentChat.messages.push({ role: 'bot', content: botReply });
-    saveChatsToCookies();
+    // Check if we received the expected data structure
+    if (data.choices && data.choices.length > 0 && data.choices[0].message) {
+      const botReply = data.choices[0].message.content;
+      updateBotMessageTyped(botReply);
+      currentChat.messages.push({ role: 'bot', content: botReply });
+      saveChatsToCookies();
+    } else {
+      updateBotMessageTyped('⚠ Something went wrong. Please try again later.');
+    }
   })
   .catch((error) => {
+    // Log and show error message if fetch fails
     console.error('Error details:', error); // Log error details for debugging
     updateBotMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
   });
