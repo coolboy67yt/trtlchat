@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
 
+  let devPreview = true
+
   if (currentChatId === null) {
     currentChatId = createNewChat(false); // Create new chat if no chats exist
   }
@@ -126,7 +128,8 @@ function sendMessage() {
 
   // Update chat name if it's the first msg
   if (currentChat.messages.length === 1) {
-    currentChat.name = userInput.length > 20 ? `${userInput.substring(0, 20)}...` : userInput;
+    userInput = "🧪 Dev Preview | " + userInput 
+    currentChat.name = userInput.length > 30 ? `${userInput.substring(0, 20)}...` : userInput;
     saveChatsToCookies();
     renderSidebar();
   }
