@@ -128,8 +128,8 @@ function sendMessage() {
 
   // Update chat name if it's the first msg
   if (currentChat.messages.length === 1) {
-    userInput = "🧪 Dev Preview | " + userInput 
-    currentChat.name = userInput.length > 30 ? `${userInput.substring(0, 20)}...` : userInput;
+    userdInput = "🧪 Dev Preview | " + userInput 
+    currentChat.name = userdInput.length > 30 ? `${userdInput.substring(0, 30)}...` : userdInput;
     saveChatsToCookies();
     renderSidebar();
   }
