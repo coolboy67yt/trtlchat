@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadChat(currentChatId);
 
   if (!chat || !input || !send || !sidebar) {
-    console.error('Missing one or more critical elements.');
+    console.error('🚨 🚨 🚨 WOAOAOAOAOOO! SOMETHING IS SERIOUSLY WRONG! LIKE, SUPER SUPER SUPER WRONG! LIKE TERRIBLY WRONG! LIKE THE WORLD IS ENDING WRONG!! AAAAAAAAAAAA!! PANIC!!!!!!!!!!!!!!! 🚨 🚨 🚨');
     return;
   }
 function appendMessage(content, sender, isLoading = false) {
@@ -175,7 +175,14 @@ function sendMessage() {
 function renderSidebar() {
   const textDiv = sidebar.querySelector('.text');
   textDiv.innerHTML = `
-    <h2>Your Chats</h2>
+  <div class="chat-bar">
+    <div class="title">
+      <h2>Your Chats</h2>
+    </div>
+    <div class="button-container">
+      <button class="newchat" onclick="createNewChat()"><b>+</b></button></div>
+    </div>
+  </div>
     <ul>
       ${chats.map(chat => `
         <li>
@@ -186,14 +193,20 @@ function renderSidebar() {
         </li>
       `).join('')}
     </ul>
-        <div class="button-container">
-          <button class="newchat" onclick="createNewChat()">+ New Chat</button></div>
   `;
 }
 
 send.addEventListener('click', sendMessage);
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    if (event.shiftKey) {
+      // Allow newline
+      return;
+    } else {
+      event.preventDefault(); // Prevent newline
+      sendMessage();
+    }
+  }
 });
 
 // do stuff
@@ -201,6 +214,16 @@ window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.createNewChat = createNewChat;
 
+});
+
+input.addEventListener('input', () => {
+  // Reset height to calculate correctly
+  input.style.height = 'auto';
+
+  // Limit expansion to 200px (you can change this)
+  const maxHeight = 200;
+  input.style.overflowY = input.scrollHeight > maxHeight ? 'scroll' : 'hidden';
+  input.style.height = `${Math.min(input.scrollHeight, maxHeight) - 1}px`;
 });
 
 const sidebar = document.getElementById('sidebar');
@@ -214,4 +237,24 @@ toggleBtn.addEventListener('click', () => {
 
 function openAbout() {
   window.location.href = 'about.html';
+}
+
+// Function to open the settings modal
+function openSettings() {
+  const settingsModal = document.getElementById('settingsModal');
+  settingsModal.style.display = 'block';
+}
+
+// Function to close the settings modal
+function closeSettings() {
+  const settingsModal = document.getElementById('settingsModal');
+  settingsModal.style.display = 'none';
+}
+
+// Close the modal if the user clicks outside of the modal content
+window.onclick = function(event) {
+  const settingsModal = document.getElementById('settingsModal');
+  if (event.target === settingsModal) {
+    settingsModal.style.display = 'none';
+  }
 }
