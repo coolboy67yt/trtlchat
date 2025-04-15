@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="styles.css" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://kit.fontawesome.com/2ff1179492.js" crossorigin="anonymous"></script>
-  <style>div.about-content{padding-left:20px;}</style>
+  <style>div.about-content{padding-left:20px;} *:link{color: #9ef0ff;}</style>
   <link rel="icon" type="image/png" href="https://emojik.vercel.app/s/%F0%9F%90%A2_%F0%9F%A4%96?size=128" sizes="16x16" />
 </head>
 <body>
@@ -19,23 +19,28 @@
       </div>
     </div>
     <nav class="nav-buttons">
-      <button onclick="goBack()">
+      <button onclick="window.history.back()">
         <i class="fa fa-arrow-left"></i> Back
       </button>
     </nav>
   </header>
 
   <div class="about-content">
-    <h1>About TurtlChat</h1>
-    <p>Hello! Turtledevv here, the creator of TrtlChat. I am extremely busy working on this project and trying to get this new update out today!</p>
-    <p>Sadly, I have not written an about page yet. I am working on it!</p>
-    <p>Anyways, you can click the little 'Back' button in the top-right. Sorry!</p>
-  </div>
-
-  <script>
-    function goBack() {
-      window.location.href = 'index.html';
-    }
-  </script>
+    <h1>About TrtlChat</h1>
+      <p>Hello! TrtlChat is an AI chat website that is purely HTML/CSS/JS, and Vercel serverless functions.</p>
+      <p>It is super simple and basic, you can use/view the code on the <a href="https://github.com/coolboy67yt/trtlchat">the github</a>!</p>
+      <p>If you have more questions, just contact me at <a href="mailto:contact@turtldev.online">contact@turtldev.online</a>.</p>
+      <p style="font-size: 10px;">I'll add more information to this about page soon! I am super busy with other features, updates, bugfixes, etc..</p>
+    
+    <p style="font-size: 5px;">&nbsp;</p>
+    <hr>
+    
+    <h1>FAQ <span style="font-size: 15px;">(Frequently Asked Questions)</span></h1>
+      <p><b>Are my chats private?</b></p>
+      <p>Yes, this website simply just acts as a interface for the API. <br>If you're worried about privacy, the code is open source on Github and you can see exactly how your requests/data is handled.<br>TL;DR: Yes, it's all private.</p>
+    <p style="font-size: 5px;">&nbsp;</p>
+      <p><b>I found a bug. How do I report it?</b></p>
+      <p>You can open a ticket on <a href="https://discord.gg/2UQSkhqxNF">my discord</a> or an issue on <a href="https://github.com/coolboy67yt/trtlchat">the github</a>.</p>
+    </div>
 </body>
 </html>
