@@ -125,7 +125,7 @@ function sendMessage() {
   const currentChat = chats.find(chat => chat.id === currentChatId);
 
   // Update chat name if it's the first msg
-  if (currentChat.messages.length === 0) {
+  if (currentChat.messages.length === 1) {
     currentChat.name = userInput.length > 20 ? `${userInput.substring(0, 20)}...` : userInput;
     saveChatsToCookies();
     renderSidebar();
