@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadChat(currentChatId);
 
   if (!chat || !input || !send || !sidebar) {
-    console.error('🚨 🚨 🚨 WOAOAOAOAOOO! SOMETHING IS SERIOUSLY WRONG! LIKE, SUPER SUPER SUPER WRONG! LIKE TERRIBLY WRONG! LIKE THE WORLD IS ENDING WRONG!! AAAAAAAAAAAA!! PANIC!!!!!!!!!!!!!!! 🚨 🚨 🚨');
+    console.error('Missing one or more critical elements.');
     return;
   }
 function appendMessage(content, sender, isLoading = false) {
@@ -117,13 +117,15 @@ function loadChat(chatId) {
 }
 
 function sendMessage() {
+  input.style.height = 'auto';
+  input.style.overflow = 'auto';
   const userInput = input.value.trim();
   if (!userInput) return;
 
   const currentChat = chats.find(chat => chat.id === currentChatId);
 
   // Update chat name if it's the first msg
-  if (currentChat.messages.length === 1) {
+  if (currentChat.messages.length === 0) {
     currentChat.name = userInput.length > 20 ? `${userInput.substring(0, 20)}...` : userInput;
     saveChatsToCookies();
     renderSidebar();
@@ -156,27 +158,24 @@ function sendMessage() {
       currentChat.messages.push({ role: 'assistant', content: assistantReply });
       saveChatsToCookies();
     } else {
-      updateassistantMessageTyped('⚠ Something went wrong. Please try again later.');
+      updateassistantMessageTyped('⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.');
     }
   })
   .catch((error) => {
     // Log and show error message if fetch fails
     console.error('Error details:', error); // Log error details for debugging
-    updateassistantMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
+    if (!error.code) {
+      updateassistantMessageTyped(`⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.`);      
+    } else {
+      updateassistantMessageTyped(`⚠ Error code ${error?.code}`);
+    }
   });
 }
 
 function renderSidebar() {
   const textDiv = sidebar.querySelector('.text');
   textDiv.innerHTML = `
-  <div class="chat-bar">
-    <div class="title">
-      <h2>Your Chats</h2>
-    </div>
-    <div class="button-container">
-      <button class="newchat" onclick="createNewChat()"><b>+</b></button></div>
-    </div>
-  </div>
+    <h2>Your Chats</h2>
     <ul>
       ${chats.map(chat => `
         <li>
@@ -187,20 +186,14 @@ function renderSidebar() {
         </li>
       `).join('')}
     </ul>
+        <div class="button-container">
+          <button class="newchat" onclick="createNewChat()">+ New Chat</button></div>
   `;
 }
 
 send.addEventListener('click', sendMessage);
-input.addEventListener('keydown', (event) => {
-  if (event.key === 'Enter') {
-    if (event.shiftKey) {
-      // Allow newline
-      return;
-    } else {
-      event.preventDefault(); // Prevent newline
-      sendMessage();
-    }
-  }
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendMessage();
 });
 
 // do stuff
@@ -208,16 +201,6 @@ window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.createNewChat = createNewChat;
 
-});
-
-input.addEventListener('input', () => {
-  // Reset height to calculate correctly
-  input.style.height = 'auto';
-
-  // Limit expansion to 200px (you can change this)
-  const maxHeight = 200;
-  input.style.overflowY = input.scrollHeight > maxHeight ? 'scroll' : 'hidden';
-  input.style.height = `${Math.min(input.scrollHeight, maxHeight) - 1}px`;
 });
 
 const sidebar = document.getElementById('sidebar');
@@ -231,24 +214,4 @@ toggleBtn.addEventListener('click', () => {
 
 function openAbout() {
   window.location.href = 'about.html';
-}
-
-// Function to open the settings modal
-function openSettings() {
-  const settingsModal = document.getElementById('settingsModal');
-  settingsModal.style.display = 'block';
-}
-
-// Function to close the settings modal
-function closeSettings() {
-  const settingsModal = document.getElementById('settingsModal');
-  settingsModal.style.display = 'none';
-}
-
-// Close the modal if the user clicks outside of the modal content
-window.onclick = function(event) {
-  const settingsModal = document.getElementById('settingsModal');
-  if (event.target === settingsModal) {
-    settingsModal.style.display = 'none';
-  }
 }

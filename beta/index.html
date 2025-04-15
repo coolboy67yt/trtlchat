@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TrtlChat</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://kit.fontawesome.com/2ff1179492.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/png" href="https://emojik.vercel.app/s/%F0%9F%90%A2_%F0%9F%A4%96?size=128" sizes="16x16" />
+  </head>
+  <body>
+    <div class="dev">DEVELOPER PREVIEW</div>
+    <header class="navbar">
+      <div class="title-container">
+        <span style="font-size: 2em; margin-right: 10px;">🐢</span>
+        <div>
+          <h1 class="main-title">TrtlChat</h1>
+          <p class="subtitle">powered by teatree.chat</p>
+        </div>
+      </div>
+      <nav class="nav-buttons">
+        <button onclick="openAbout()">
+          <i class="fas fa-info-circle"></i> About
+        </button>
+        <button onclick="openSettings()">
+          <i class="fas fa-cog"></i> Settings
+        </button>
+      </nav>
+    </header>
+
+    <div class="main-container">
+      <aside class="sidebar" id="sidebar">
+        <button class="toggle-btn" id="toggleBtn">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="text">
+          
+      </aside>
+      <div class="chat-area">
+        <div id="chat"></div>
+
+        <div id="input-area">
+          <textarea id="input" placeholder="Say something..." rows="1" style="resize: none;"></textarea>
+          <button id="send"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="main.js" defer></script>
+     <div id="settingsModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeSettings()">&times;</span>
+      <h2>Settings 🔧</h2>
+      <p>These are just placeholders and do not save or do anything</p>
+      <hr>
+      <form>
+        <label for="setting1"><b>System Prompt</b></label>
+        <br>
+        <textarea id="setting1" rows="4" cols="50" style="resize: none;">default prmpt</textarea><br><br>
+
+        <label for="setting2">Developer Mode</label>
+        <input type="checkbox" id="setting2"><br><br>
+
+        <button class="save-settings" type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+  </body>
+</html>
