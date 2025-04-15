@@ -183,6 +183,7 @@ function renderSidebar() {
       <button class="newchat" onclick="createNewChat()"><b>+</b></button></div>
     </div>
   </div>
+  <hr>
     <ul>
       ${chats.map(chat => `
         <li>
