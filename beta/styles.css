@@ -359,7 +359,7 @@ textarea {
 div.dev {
   text-align: center;
   padding: 2px;
-  font-family: Consolas;
+  font-family: Consolas, Monaco;
   background-color: #1a1d23;
 }
 
