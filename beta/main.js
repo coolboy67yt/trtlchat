@@ -28,6 +28,11 @@ function appendMessage(content, sender, isLoading = false) {
   contentDiv.className = 'content';
   if (sender === 'assistant') {
     contentDiv.innerHTML = marked.parse(content);
+    if (window.MathJax) {
+      MathJax.typesetPromise([contentDiv]).catch((err) => console.error("MathJax failed:", err));
+    } else {
+        console.warn("MathJax isn't loaded. Can't typeset math!");
+    }
   } else {
     contentDiv.textContent = content;
   }
