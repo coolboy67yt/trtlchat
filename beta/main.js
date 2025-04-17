@@ -245,7 +245,12 @@ input.addEventListener('keydown', (event) => {
 window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.createNewChat = createNewChat;
-window.defaultAiPrompt = defaultAiPrompt;
+
+function resetPrompt() {
+  document.getElementById('promptInput').value = defaultAiPrompt;
+  saveSettings()
+}
+
 
 });
 
