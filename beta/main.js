@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let aiPrompt = defaultAiPrompt;
   loadSettings()
-  
+
   const inputField = document.getElementById('promptInput');
   if (inputField.value.trim() === "") {
     inputField.value = aiPrompt;
@@ -285,10 +285,13 @@ function openAbout() {
 
 function loadSettings() {
   const cookies = document.cookie.split(';');
+  console.log('Cookies:', cookies);  // Debug: Show all cookies
+  
   for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
       if (cookie.startsWith('aiPrompt=')) {
           aiPrompt = decodeURIComponent(cookie.substring('aiPrompt='.length));
+          console.log('Loaded aiPrompt from cookie:', aiPrompt);  // Debug: Show loaded aiPrompt value
           document.getElementById('promptInput').value = aiPrompt;
       } else if (cookie.startsWith('devMode=')) {
           devMode = cookie.substring('devMode='.length) === "true";
@@ -296,6 +299,8 @@ function loadSettings() {
       }
   }
 }
+
+
 function openSettings() {
   loadSettings();
   const settingsModal = document.getElementById('settingsModal');
