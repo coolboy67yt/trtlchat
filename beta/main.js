@@ -189,6 +189,7 @@ function sendMessage() {
       currentChat.messages.push({ role: 'assistant', content: assistantReply });
     } else {
       updateassistantMessageTyped('⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.');
+    }
   })
   .catch((error) => {
     // Log and show error message if fetch fails
