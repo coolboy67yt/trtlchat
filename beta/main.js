@@ -116,9 +116,10 @@ function saveChatsToCookies() {
 }
 
 function createNewChat(saveImmediately = true) {
+  console.log(aiPrompt)
   const newChat = { id: Date.now(), name: `New Chat`, messages: [{role: 'system', content: aiPrompt}] };
   chats.push(newChat);
-  if (saveImmediately) saveChatsToCookies();
+  saveChatsToCookies();
   renderSidebar();
   loadChat(newChat.id); // Load the new chat immediately
   return newChat.id;
