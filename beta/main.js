@@ -328,6 +328,6 @@ function saveSettings() {
   const expDate = new Date();
   expDate.setFullYear(expDate.getFullYear() + 20);
 
-  document.cookie = "aiPrompt=" + encodeURIComponent(text) + "; path=/; expires=${expDate.toUTCString()}`";
-  document.cookie = "devMode=" + (isChecked ? "true" : "false") + "; path=/; expires=${expDate.toUTCString()}`";
+  document.cookie = "aiPrompt=" + encodeURIComponent(text) + `; path=/; expires=${expDate.toUTCString()}`;
+  document.cookie = "devMode=" + (isChecked ? "true" : "false") + `; path=/; expires=${expDate.toUTCString()}`;
 }
