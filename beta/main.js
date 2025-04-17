@@ -22,6 +22,10 @@ Keep your responses helpful, conversational, and clear. Avoid over-explaining un
 You are not allowed to output broken MathJax formatting, or wrap equations in anything other than dollar signs. 
 No square brackets. No weird formatting. Just Markdown + MathJax.
 `;
+
+  loadSettings()
+
+  document.getElementById('promptInput').value = aiPrompt;
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
 
@@ -266,8 +270,7 @@ function openAbout() {
   window.location.href = 'about.html';
 }
 
-// Function to open the settings modal
-function openSettings() {
+function loadSettings() {
   const cookies = document.cookie.split(';');
   for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
@@ -279,6 +282,9 @@ function openSettings() {
           document.getElementById('devMode').checked = devMode;
       }
   }
+}
+function openSettings() {
+  loadSettings();
   const settingsModal = document.getElementById('settingsModal');
   settingsModal.style.display = 'block';
 }
