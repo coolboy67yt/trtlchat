@@ -186,10 +186,8 @@ function sendMessage() {
       const assistantReply = data.choices[0].message.content;
       updateassistantMessageTyped(assistantReply);
       currentChat.messages.push({ role: 'assistant', content: assistantReply });
-      saveChatsToCookies();
     } else {
       updateassistantMessageTyped('⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.');
-    }
   })
   .catch((error) => {
     // Log and show error message if fetch fails
@@ -200,6 +198,7 @@ function sendMessage() {
       updateassistantMessageTyped(`⚠ Error code ${error?.code}`);
     }
   });
+  saveChatsToCookies();
 }
 
 function renderSidebar() {
@@ -277,7 +276,6 @@ function loadSettings() {
       if (cookie.startsWith('aiPrompt=')) {
           aiPrompt = decodeURIComponent(cookie.substring('aiPrompt='.length));
           document.getElementById('promptInput').value = aiPrompt;
-          console.log("loaded custom prompt!!!!!!")
       } else if (cookie.startsWith('devMode=')) {
           devMode = cookie.substring('devMode='.length) === "true";
           document.getElementById('devMode').checked = devMode;
