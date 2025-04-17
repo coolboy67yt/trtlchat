@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   `;
 
   loadSettings()
+  aiPrompt = document.getElementById('promptInput').value
   console.log(aiPrompt)
   document.getElementById('promptInput').value = aiPrompt;
   let chats = getChatsFromCookies();
@@ -279,6 +280,7 @@ function loadSettings() {
       if (cookie.startsWith('aiPrompt=')) {
           aiPrompt = decodeURIComponent(cookie.substring('aiPrompt='.length));
           document.getElementById('promptInput').value = aiPrompt;
+          console.log("loaded custom prompt!!!!!!")
       } else if (cookie.startsWith('devMode=')) {
           devMode = cookie.substring('devMode='.length) === "true";
           document.getElementById('devMode').checked = devMode;
