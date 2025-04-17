@@ -245,6 +245,7 @@ input.addEventListener('keydown', (event) => {
 window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.createNewChat = createNewChat;
+window.defaultAiPrompt = defaultAiPrompt;
 
 });
 
