@@ -216,10 +216,10 @@ body {
 
 #add {
   margin-right: 1rem;
-  background: #4a90e2;
+  background: #7f8081;
   color: white;
   border: none;
-  border-radius: 90;
+  border-radius: 100rem;
   padding: 0 1rem;
   cursor: pointer;
   font-size: 1rem; 
