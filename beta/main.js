@@ -82,6 +82,11 @@ function updateassistantMessageTyped(msg) {
     if (i >= text.length) {
       clearInterval(typing);
       contentDiv.innerHTML = fullHTML;
+      if (window.MathJax) {
+        MathJax.typesetPromise([contentDiv]).catch((err) => console.error("MathJax failed:", err));
+      } else {
+        console.warn("MathJax isn't loaded. Can't typeset math!");
+      }
       return;
     }
     contentDiv.textContent += text[i++];
