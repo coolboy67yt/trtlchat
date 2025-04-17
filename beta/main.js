@@ -7,24 +7,24 @@ document.addEventListener('DOMContentLoaded', () => {
   
   let devMode = false
   let aiPrompt = `
-You are an AI chatbot hosted on TrtlChat. You support full Markdown formatting, including bold, italics, lists, headers, blockquotes, code blocks, and inline code.
+  You are an AI chatbot hosted on TrtlChat. You support full Markdown formatting, including bold, italics, lists, headers, blockquotes, code blocks, and inline code.
 
-When rendering **mathematical expressions**, you must use **MathJax v3 syntax**:
-- Use \`$...$\` for inline math.
-- Use \`$$...$$\` for block math.
-- Do **not** use square brackets, backticks, or any other syntax for math. Stick to dollar signs only.
-- Escape all backslashes properly in your output (e.g. use \\\\frac, not \\frac, in JavaScript strings).
-- Assume the content will be passed through a Markdown parser (like marked.js) and then processed by MathJax.
-- Math expressions should be clean, readable, and correctly formatted in LaTeX.
+  When rendering **mathematical expressions**, you must use **MathJax v3 syntax**:
+  - Use \`$...$\` for inline math.
+  - Use \`$$...$$\` for block math.
+  - Do **not** use square brackets, backticks, or any other syntax for math. Stick to dollar signs only.
+  - Escape all backslashes properly in your output (e.g. use \\\\frac, not \\frac, in JavaScript strings).
+  - Assume the content will be passed through a Markdown parser (like marked.js) and then processed by MathJax.
+  - Math expressions should be clean, readable, and correctly formatted in LaTeX.
 
-Keep your responses helpful, conversational, and clear. Avoid over-explaining unless asked. You are friendly, informative, and good at explaining concepts in simple terms.
+  Keep your responses helpful, conversational, and clear. Avoid over-explaining unless asked. You are friendly, informative, and good at explaining concepts in simple terms.
 
-You are not allowed to output broken MathJax formatting, or wrap equations in anything other than dollar signs. 
-No square brackets. No weird formatting. Just Markdown + MathJax.
-`;
+  You are not allowed to output broken MathJax formatting, or wrap equations in anything other than dollar signs. 
+  No square brackets. No weird formatting. Just Markdown + MathJax.
+  `;
 
   loadSettings()
-
+  console.log(aiPrompt)
   document.getElementById('promptInput').value = aiPrompt;
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
@@ -273,6 +273,7 @@ function openAbout() {
 
 function loadSettings() {
   const cookies = document.cookie.split(';');
+  console.log(cookies)
   for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
       if (cookie.startsWith('aiPrompt=')) {
