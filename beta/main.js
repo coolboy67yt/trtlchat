@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   loadSettings()
   aiPrompt = document.getElementById('promptInput').value
-  console.log(aiPrompt)
   document.getElementById('promptInput').value = aiPrompt;
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
@@ -117,7 +116,6 @@ function saveChatsToCookies() {
 }
 
 function createNewChat(saveImmediately = true) {
-  console.log(aiPrompt)
   const newChat = { id: Date.now(), name: `New Chat`, messages: [{role: 'system', content: aiPrompt}] };
   chats.push(newChat);
   saveChatsToCookies();
@@ -274,7 +272,6 @@ function openAbout() {
 
 function loadSettings() {
   const cookies = document.cookie.split(';');
-  console.log(cookies)
   for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
       if (cookie.startsWith('aiPrompt=')) {
