@@ -141,7 +141,7 @@ function sendMessage() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'gpt-4o',
+      model: 'llama-4-mavrick',
       messages: currentChat.messages,
       max_tokens: 500,
       temperature: 0.7
