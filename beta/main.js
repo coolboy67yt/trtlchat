@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.getElementById('sidebar');
   const API_URL = '/api/proxy';
   
+  let devMode = false
   let aiPrompt = `
 You are an AI chatbot hosted on TrtlChat. You support full Markdown formatting, including bold, italics, lists, headers, blockquotes, code blocks, and inline code.
 
@@ -267,6 +268,17 @@ function openAbout() {
 
 // Function to open the settings modal
 function openSettings() {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith('aiPrompt=')) {
+          aiPrompt = decodeURIComponent(cookie.substring('aiPrompt='.length));
+          document.getElementById('promptInput').value = aiPrompt;
+      } else if (cookie.startsWith('devMode=')) {
+          devMode = cookie.substring('devMode='.length) === "true";
+          document.getElementById('devMode').checked = devMode;
+      }
+  }
   const settingsModal = document.getElementById('settingsModal');
   settingsModal.style.display = 'block';
 }
@@ -283,4 +295,15 @@ window.onclick = function(event) {
   if (event.target === settingsModal) {
     settingsModal.style.display = 'none';
   }
+}
+
+function saveSettings() {
+  const text = document.getElementById('promptInput').value;
+  const isChecked = document.getElementById('devMode').checked;
+
+  const expDate = new Date();
+  expDate.setFullYear(expDate.getFullYear() + 20);
+
+  document.cookie = "aiPrompt=" + encodeURIComponent(text) + "; path=/; expires=${expDate.toUTCString()}`";
+  document.cookie = "devMode=" + (isChecked ? "true" : "false") + "; path=/; expires=${expDate.toUTCString()}`";
 }

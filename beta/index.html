@@ -54,17 +54,17 @@
     <div class="modal-content">
       <span class="close-btn" onclick="closeSettings()">&times;</span>
       <h2>Settings 🔧</h2>
-      <p>These are just placeholders and do not save or do anything</p>
+      <p>These are just placeholders and do not change anything</p>
       <hr>
       <form>
-        <label for="setting1"><b>System Prompt</b></label>
+        <label for="promptInput"><b>System Prompt</b></label>
         <br>
-        <textarea id="setting1" rows="4" cols="50" style="resize: none;">default prmpt</textarea><br><br>
+        <textarea id="promptInput" rows="4" cols="50" style="resize: none;">default prmpt</textarea><br><br>
 
-        <label for="setting2">Developer Mode</label>
-        <input type="checkbox" id="setting2"><br><br>
+        <label for="devMode">Developer Mode</label>
+        <input type="checkbox" id="devMode"><br><br>
 
-        <button class="save-settings" type="submit">Save</button>
+        <button class="save-settings" type="submit" onclick="saveSettings()">Save</button>
       </form>
     </div>
   </div>
