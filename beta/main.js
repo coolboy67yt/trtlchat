@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const API_URL = '/api/proxy';
   
   let devMode = false
-  let aiPrompt = `
+  let defaultAiPrompt = `
   You are an AI chatbot hosted on TrtlChat. You support full Markdown formatting, including bold, italics, lists, headers, blockquotes, code blocks, and inline code.
 
   When rendering **mathematical expressions**, you must use **MathJax v3 syntax**:
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   No square brackets. No weird formatting. Just Markdown + MathJax.
   `;
 
+  let aiPrompt = defaultAiPrompt;
   loadSettings()
   aiPrompt = document.getElementById('promptInput').value
   document.getElementById('promptInput').value = aiPrompt;
