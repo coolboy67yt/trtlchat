@@ -25,8 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let aiPrompt = defaultAiPrompt;
   loadSettings()
-  aiPrompt = document.getElementById('promptInput').value
-  document.getElementById('promptInput').value = aiPrompt;
+  
+  const inputField = document.getElementById('promptInput');
+  if (inputField.value.trim() === "") {
+    inputField.value = aiPrompt;
+  } else {
+    aiPrompt = inputField.value;
+  }
+  
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
 
