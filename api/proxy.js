@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error("TeaTree API Error:", response.status, errorData);
+      console.error("LLM.VIN API Error:", response.status, errorData);
       return res.status(response.status).json({ error: 'Failed to fetch from llm.vin', detail: errorData });
     }
 
