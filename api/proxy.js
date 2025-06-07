@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://api.teatree.chat/v1/chat/completions', {
+    const response = await fetch('https://api.llm.vin/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errorData = await response.text();
       console.error("TeaTree API Error:", response.status, errorData);
-      return res.status(response.status).json({ error: 'Failed to fetch from TeaTree', detail: errorData });
+      return res.status(response.status).json({ error: 'Failed to fetch from llm.vin', detail: errorData });
     }
 
     const data = await response.json();
