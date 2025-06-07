@@ -180,7 +180,7 @@ function sendMessage() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'llama-4-mavrick',
+      model: 'deepseek-r1',
       messages: currentChat.messages,
       max_tokens: 500,
       temperature: 0.7
