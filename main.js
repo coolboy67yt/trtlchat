@@ -5,7 +5,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const sidebar = document.getElementById('sidebar');
   const API_URL = '/api/proxy';
   
-  let aiPrompt = "You are an AI chatbot hosted on TrtlChat. You can use all markdown features, such as images, text formatting, and more."
+  let devMode = false
+  let defaultAiPrompt = `
+  You are an AI chatbot hosted on TrtlChat. You support full Markdown formatting, including bold, italics, lists, headers, blockquotes, code blocks, and inline code.
+
+  When rendering **mathematical expressions**, you must use **MathJax v3 syntax**:
+  - Use \`$...$\` for inline math.
+  - Use \`$$...$$\` for block math.
+  - Do **not** use square brackets, backticks, or any other syntax for math. Stick to dollar signs only.
+  - Escape all backslashes properly in your output (e.g. use \\\\frac, not \\frac, in JavaScript strings).
+  - Assume the content will be passed through a Markdown parser (like marked.js) and then processed by MathJax.
+  - Math expressions should be clean, readable, and correctly formatted in LaTeX.
+
+  Keep your responses helpful, conversational, and clear. Avoid over-explaining unless asked. You are friendly, informative, and good at explaining concepts in simple terms.
+
+  You are not allowed to output broken MathJax formatting, or wrap equations in anything other than dollar signs. 
+  No square brackets. No weird formatting. Just Markdown + MathJax.
+  `;
+
+  let aiPrompt = defaultAiPrompt;
+  loadSettings()
+
+  const inputField = document.getElementById('promptInput');
+  if (inputField.value.trim() === "") {
+    inputField.value = aiPrompt;
+  } else {
+    aiPrompt = inputField.value;
+  }
+  
   let chats = getChatsFromCookies();
   let currentChatId = chats.length > 0 ? chats[0].id : null;
 
@@ -17,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadChat(currentChatId);
 
   if (!chat || !input || !send || !sidebar) {
-    console.error('Missing one or more critical elements.');
+    console.error('🚨 🚨 🚨 WOAOAOAOAOOO! SOMETHING IS SERIOUSLY WRONG! LIKE, SUPER SUPER SUPER WRONG! LIKE TERRIBLY WRONG! LIKE THE WORLD IS ENDING WRONG!! AAAAAAAAAAAA!! PANIC!!!!!!!!!!!!!!! 🚨 🚨 🚨');
     return;
   }
 function appendMessage(content, sender, isLoading = false) {
@@ -28,6 +55,11 @@ function appendMessage(content, sender, isLoading = false) {
   contentDiv.className = 'content';
   if (sender === 'assistant') {
     contentDiv.innerHTML = marked.parse(content);
+    if (window.MathJax) {
+      MathJax.typesetPromise([contentDiv]).catch((err) => console.error("MathJax failed:", err));
+    } else {
+        console.warn("MathJax isn't loaded. Can't typeset math!");
+    }
   } else {
     contentDiv.textContent = content;
   }
@@ -62,6 +94,11 @@ function updateassistantMessageTyped(msg) {
     if (i >= text.length) {
       clearInterval(typing);
       contentDiv.innerHTML = fullHTML;
+      if (window.MathJax) {
+        MathJax.typesetPromise([contentDiv]).catch((err) => console.error("MathJax failed:", err));
+      } else {
+        console.warn("MathJax isn't loaded. Can't typeset math!");
+      }
       return;
     }
     contentDiv.textContent += text[i++];
@@ -88,7 +125,7 @@ function saveChatsToCookies() {
 function createNewChat(saveImmediately = true) {
   const newChat = { id: Date.now(), name: `New Chat`, messages: [{role: 'system', content: aiPrompt}] };
   chats.push(newChat);
-  if (saveImmediately) saveChatsToCookies();
+  saveChatsToCookies();
   renderSidebar();
   loadChat(newChat.id); // Load the new chat immediately
   return newChat.id;
@@ -117,6 +154,8 @@ function loadChat(chatId) {
 }
 
 function sendMessage() {
+  input.style.height = 'auto';
+  input.style.overflow = 'auto';
   const userInput = input.value.trim();
   if (!userInput) return;
 
@@ -141,7 +180,7 @@ function sendMessage() {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      model: 'llama-4-mavrick',
+      model: 'deepseek-r1',
       messages: currentChat.messages,
       max_tokens: 500,
       temperature: 0.7
@@ -154,22 +193,34 @@ function sendMessage() {
       const assistantReply = data.choices[0].message.content;
       updateassistantMessageTyped(assistantReply);
       currentChat.messages.push({ role: 'assistant', content: assistantReply });
-      saveChatsToCookies();
     } else {
-      updateassistantMessageTyped('⚠ Something went wrong. Please try again later.');
+      updateassistantMessageTyped('⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.');
     }
   })
   .catch((error) => {
     // Log and show error message if fetch fails
     console.error('Error details:', error); // Log error details for debugging
-    updateassistantMessageTyped(`⚠ Error code ${error?.code || 'UNKNOWN'}`);
+    if (!error.code) {
+      updateassistantMessageTyped(`⚠ Something went wrong. Please try again later.\nIf the problem persists, open an issue on the Github.`);      
+    } else {
+      updateassistantMessageTyped(`⚠ Error code ${error?.code}`);
+    }
   });
+  saveChatsToCookies();
 }
 
 function renderSidebar() {
   const textDiv = sidebar.querySelector('.text');
   textDiv.innerHTML = `
-    <h2>Your Chats</h2>
+  <div class="chat-bar">
+    <div class="title">
+      <h2>Your Chats</h2>
+    </div>
+    <div class="button-container">
+      <button class="newchat" onclick="createNewChat()"><b>+</b></button></div>
+    </div>
+  </div>
+  <hr>
     <ul>
       ${chats.map(chat => `
         <li>
@@ -180,14 +231,20 @@ function renderSidebar() {
         </li>
       `).join('')}
     </ul>
-        <div class="button-container">
-          <button class="newchat" onclick="createNewChat()">+ New Chat</button></div>
   `;
 }
 
 send.addEventListener('click', sendMessage);
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') sendMessage();
+input.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    if (event.shiftKey) {
+      // Allow newline
+      return;
+    } else {
+      event.preventDefault(); // Prevent newline
+      sendMessage();
+    }
+  }
 });
 
 // do stuff
@@ -195,6 +252,22 @@ window.loadChat = loadChat;
 window.deleteChat = deleteChat;
 window.createNewChat = createNewChat;
 
+function resetPrompt() {
+  document.getElementById('promptInput').value = defaultAiPrompt;
+  saveSettings()
+}
+
+
+});
+
+input.addEventListener('input', () => {
+  // Reset height to calculate correctly
+  input.style.height = 'auto';
+
+  // Limit expansion to 200px (you can change this)
+  const maxHeight = 200;
+  input.style.overflowY = input.scrollHeight > maxHeight ? 'scroll' : 'hidden';
+  input.style.height = `${Math.min(input.scrollHeight, maxHeight) - 1}px`;
 });
 
 const sidebar = document.getElementById('sidebar');
@@ -208,4 +281,53 @@ toggleBtn.addEventListener('click', () => {
 
 function openAbout() {
   window.location.href = 'about.html';
+}
+
+function loadSettings() {
+  const cookies = document.cookie.split(';');
+  console.log('Cookies:', cookies);  // Debug: Show all cookies
+  
+  for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.startsWith('aiPrompt=')) {
+          aiPrompt = decodeURIComponent(cookie.substring('aiPrompt='.length));
+          console.log('Loaded aiPrompt from cookie:', aiPrompt);  // Debug: Show loaded aiPrompt value
+          document.getElementById('promptInput').value = aiPrompt;
+      } else if (cookie.startsWith('devMode=')) {
+          devMode = cookie.substring('devMode='.length) === "true";
+          document.getElementById('devMode').checked = devMode;
+      }
+  }
+}
+
+
+function openSettings() {
+  loadSettings();
+  const settingsModal = document.getElementById('settingsModal');
+  settingsModal.style.display = 'block';
+}
+
+// Function to close the settings modal
+function closeSettings() {
+  const settingsModal = document.getElementById('settingsModal');
+  settingsModal.style.display = 'none';
+}
+
+// Close the modal if the user clicks outside of the modal content
+window.onclick = function(event) {
+  const settingsModal = document.getElementById('settingsModal');
+  if (event.target === settingsModal) {
+    settingsModal.style.display = 'none';
+  }
+}
+
+function saveSettings() {
+  const text = document.getElementById('promptInput').value;
+  const isChecked = document.getElementById('devMode').checked;
+
+  const expDate = new Date();
+  expDate.setFullYear(expDate.getFullYear() + 20);
+
+  document.cookie = "aiPrompt=" + encodeURIComponent(text) + `; path=/; expires=${expDate.toUTCString()}`;
+  document.cookie = "devMode=" + (isChecked ? "true" : "false") + `; path=/; expires=${expDate.toUTCString()}`;
 }
